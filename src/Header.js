@@ -1,100 +1,124 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
-export default function Header() {
-  let weatherData = {
-    city: "New York",
-    temperature: -6,
-    date: "Sunday 14:37",
-    description: "Overcast clouds",
-    imgUrl: "http://openweathermap.org/img/wn/04d@2x.png",
-    humidity: 64,
-    wind: 4,
-  };
+export default function Header(props) {
+  const [weatherData, setWeatherData] = useState({ ready: true });
+  const [city, setCity] = useState(props.defaultCity);
 
-  return (
-    <div className="container">
-      <div className="weather-app">
-        <div className="row align-items-center justify-content-center">
-          <div className="col">
-            <form id="searchForm">
-              <div className="form">
-                <input
-                  type="search"
-                  placeholder="Search city"
-                  autocomplete="off"
-                />
-                <div className="col-3">
+  function handleResponse(response) {
+    setWeatherData({
+      ready: true,
+      temperature: response.data.main.temp,
+      humidity: response.data.main.humidity,
+      date: new Date(response.data.dt * 1000),
+      description: response.data.weather[0].description,
+      icon: response.data.weather[0].description,
+      wind: response.data.wind.speed,
+      city: response.data.name,
+    });
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+
+  function handleSubmit(event) {
+    setCity(event.target.value);
+  }
+
+  function search() {
+    const apiKey = "f7a9e1edb73d350092c9960e10136d73";
+    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?=${props.defaultCity}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+
+  if (weatherData.ready) {
+    return (
+      <div className="container">
+        <div className="weather-app">
+          <div className="row align-items-center justify-content-center">
+            <div className="col">
+              <form id="searchForm">
+                <div className="form">
                   <input
-                    type="submit"
-                    value="Search"
-                    className="btn btn-primary w-100"
-                    id="search-button"
+                    type="search"
+                    placeholder="Search city"
+                    autocomplete="off"
                   />
-                </div>
-              </div>
-            </form>
-            <p className="temperature">
-              <span className="units">
-                <a href="/">ºC</a> | <a href="/">ºF </a>
-              </span>
-            </p>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <h1>{weatherData.city}</h1>
-          </div>
-        </div>
-        <div className="row align-items-center justify-content-center">
-          <div className="col-5">
-            <h2>
-              <span>{weatherData.temperature}</span>º
-            </h2>
-            <h3>
-              <br />
-            </h3>
-            <ul>
-              <li>
-                Last updated: {weatherData.date} <br />
-                {weatherData.description}
-                <span></span>
-              </li>
-              <li></li>
-            </ul>
-            <h4>
-              <img src={weatherData.imgUrl} alt="" width="170px" />
-            </h4>
-          </div>
-          <div className="col-5">
-            <div className="card-deck">
-              <div className="col-12">
-                <div className="card">
-                  <img
-                    src="images/drop.svg"
-                    alt="Humidity"
-                    width="50px"
-                    className="icons"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">Humidity</h5>
-                    <p className="card-text">
-                      <span>{weatherData.humidity}</span>%
-                    </p>
+                  <div className="col-3">
+                    <input
+                      type="submit"
+                      value="Search"
+                      className="btn btn-primary w-100"
+                      id="search-button"
+                    />
                   </div>
                 </div>
+              </form>
+              <p className="temperature">
+                <span className="units">
+                  <a href="/">ºC</a> | <a href="/">ºF </a>
+                </span>
+              </p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <h1>{weatherData.city}</h1>
+            </div>
+          </div>
+          <div className="row align-items-center justify-content-center">
+            <div className="col-5">
+              <h2>
+                <span>{weatherData.temperature}</span>º
+              </h2>
+              <h3>
+                <br />
+              </h3>
+              <ul>
+                <li>
+                  Last updated: {weatherData.date} <br />
+                  {weatherData.description}
+                  <span></span>
+                </li>
+                <li></li>
+              </ul>
+              <h4>
+                <img src={weatherData.imgUrl} alt="" width="170px" />
+              </h4>
+            </div>
+            <div className="col-5">
+              <div className="card-deck">
+                <div className="col-12">
+                  <div className="card">
+                    <img
+                      src="images/drop.svg"
+                      alt="Humidity"
+                      width="50px"
+                      className="icons"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Humidity</h5>
+                      <p className="card-text">
+                        <span>{weatherData.humidity}</span>%
+                      </p>
+                    </div>
+                  </div>
 
-                <div className="card">
-                  <img
-                    src="images/wind.svg"
-                    alt="Wind"
-                    width="50px"
-                    className="icons"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">Wind</h5>
-                    <p className="card-text">
-                      <span>{weatherData.wind}</span> km/h
-                    </p>
+                  <div className="card">
+                    <img
+                      src="images/wind.svg"
+                      alt="Wind"
+                      width="50px"
+                      className="icons"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Wind</h5>
+                      <p className="card-text">
+                        <span>{weatherData.wind}</span> km/h
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -102,6 +126,9 @@ export default function Header() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    search();
+    return "Loading...";
+  }
 }
