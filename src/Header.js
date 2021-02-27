@@ -78,7 +78,6 @@ export default function Header(props) {
               </h3>
               <ul>
                 <li>
-                  Last updated: {weatherData.date} <br />
                   {weatherData.description}
                   <span></span>
                 </li>
