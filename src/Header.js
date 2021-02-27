@@ -2,12 +2,12 @@ import axios from "axios";
 import React, { useState } from "react";
 
 export default function Header(props) {
-  const [weatherData, setWeatherData] = useState({ ready: true });
+  const [weatherData, setWeatherData] = useState({ ready: false });
   const [city, setCity] = useState(props.defaultCity);
 
   function handleResponse(response) {
     setWeatherData({
-      ready: true,
+      ready: false,
       temperature: response.data.main.temp,
       humidity: response.data.main.humidity,
       date: new Date(response.data.dt * 1000),
@@ -29,7 +29,7 @@ export default function Header(props) {
 
   function search() {
     const apiKey = "f7a9e1edb73d350092c9960e10136d73";
-    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?=${props.defaultCity}&appid=${apiKey}&units=metric`;
+    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${props.defaultCity}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
   }
 
