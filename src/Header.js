@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import FormattedDate from "./FormattedDate";
 
 export default function Header(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
@@ -7,8 +8,8 @@ export default function Header(props) {
 
   function handleResponse(response) {
     setWeatherData({
-      ready: false,
-      temperature: response.data.main.temp,
+      ready: true,
+      temperature: Math.round(response.data.main.temp),
       humidity: response.data.main.humidity,
       date: new Date(response.data.dt * 1000),
       description: response.data.weather[0].description,
@@ -29,7 +30,7 @@ export default function Header(props) {
 
   function search() {
     const apiKey = "f7a9e1edb73d350092c9960e10136d73";
-    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${props.defaultCity}&appid=${apiKey}&units=metric`;
+    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
   }
 
@@ -74,6 +75,7 @@ export default function Header(props) {
                 <span>{weatherData.temperature}</span>º
               </h2>
               <h3>
+                <FormattedDate date={weatherData.date} />
                 <br />
               </h3>
               <ul>
