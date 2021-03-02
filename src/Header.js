@@ -19,43 +19,46 @@ export default function Header(props) {
     });
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    search();
-  }
-
-  function handleSubmit(event) {
-    setCity(event.target.value);
-  }
-
   function search() {
     const apiKey = "f7a9e1edb73d350092c9960e10136d73";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
   }
 
+  function handleSubmit(event) {
+    event.preventDefault;
+    search();
+  }
+
+  function handleCityChange(event) {
+    setCity(event.target.value);
+  }
+
   if (weatherData.ready) {
     return (
       <div className="container">
         <div className="weather-app">
-          <div className="row align-items-center justify-content-center">
-            <div className="col">
-              <form id="searchForm">
-                <div className="form">
-                  <input
-                    type="search"
-                    placeholder="Search city"
-                    autocomplete="off"
-                  />
-                  <div className="col-3">
+          <form onSubmit={handleSubmit}>
+            <div className="row align-items-center justify-content-center">
+              <div className="col">
+                <form id="searchForm">
+                  <div className="form">
                     <input
-                      type="submit"
-                      value="Search"
-                      className="btn btn-primary w-100"
-                      id="search-button"
+                      type="search"
+                      placeholder="Search city"
+                      autocomplete="off"
+                      onChange={handleCityChange}
                     />
+                    <div className="col-3">
+                      <input
+                        type="submit"
+                        value="Search"
+                        className="btn btn-primary w-100"
+                        id="search-button"
+                      />
+                    </div>
                   </div>
-                </div>
+                </form>
               </form>
               <p className="temperature">
                 <span className="units">
