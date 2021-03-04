@@ -1,11 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
 import FormattedDate from "./FormattedDate";
-
 export default function Header(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
   const [city, setCity] = useState(props.defaultCity);
-
   function handleResponse(response) {
     setWeatherData({
       ready: true,
@@ -18,47 +16,41 @@ export default function Header(props) {
       city: response.data.name,
     });
   }
-
   function search() {
     const apiKey = "f7a9e1edb73d350092c9960e10136d73";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
   }
-
   function handleSubmit(event) {
-    event.preventDefault;
+    event.preventDefault();
     search();
   }
-
   function handleCityChange(event) {
     setCity(event.target.value);
   }
-
   if (weatherData.ready) {
     return (
       <div className="container">
         <div className="weather-app">
-          <form onSubmit={handleSubmit}>
-            <div className="row align-items-center justify-content-center">
-              <div className="col">
-                <form id="searchForm">
-                  <div className="form">
+          <div className="row align-items-center justify-content-center">
+            <div className="col">
+              <form onSubmit={handleSubmit}>
+                <div className="form">
+                  <input
+                    type="search"
+                    placeholder="Search city"
+                    autocomplete="off"
+                    onChange={handleCityChange}
+                  />
+                  <div className="col-3">
                     <input
-                      type="search"
-                      placeholder="Search city"
-                      autocomplete="off"
-                      onChange={handleCityChange}
+                      type="submit"
+                      value="Search"
+                      className="btn btn-primary w-100"
+                      id="search-button"
                     />
-                    <div className="col-3">
-                      <input
-                        type="submit"
-                        value="Search"
-                        className="btn btn-primary w-100"
-                        id="search-button"
-                      />
-                    </div>
                   </div>
-                </form>
+                </div>
               </form>
               <p className="temperature">
                 <span className="units">
@@ -109,7 +101,6 @@ export default function Header(props) {
                       </p>
                     </div>
                   </div>
-
                   <div className="card">
                     <img
                       src="images/wind.svg"
