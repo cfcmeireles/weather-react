@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import FormattedDate from "./FormattedDate";
+import WeatherTemperature from "./WeatherTemperature";
+
 export default function Header(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
   const [city, setCity] = useState(props.defaultCity);
@@ -52,11 +54,9 @@ export default function Header(props) {
                   </div>
                 </div>
               </form>
-              <p className="temperature">
-                <span className="units">
-                  <a href="/">ºC</a> | <a href="/">ºF </a>
-                </span>
-              </p>
+              <div className="unit">
+                <WeatherTemperature celsius={weatherData.temperature} />
+              </div>
             </div>
           </div>
           <div className="row">
