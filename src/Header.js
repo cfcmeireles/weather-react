@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import FormattedDate from "./FormattedDate";
 import WeatherTemperature from "./WeatherTemperature";
+import Forecast from "./Forecast";
+import WeatherIcon from "./WeatherIcon";
 
 export default function Header(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
@@ -15,11 +17,12 @@ export default function Header(props) {
       humidity: response.data.main.humidity,
       date: new Date(response.data.dt * 1000),
       description: response.data.weather[0].description,
-      iconUrl: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+      icon: response.data.weather[0].icon,
       wind: response.data.wind.speed,
       city: response.data.name,
     });
   }
+
   function search() {
     const apiKey = "f7a9e1edb73d350092c9960e10136d73";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
@@ -85,7 +88,7 @@ export default function Header(props) {
                   <li></li>
                 </ul>
                 <h4>
-                  <img src={weatherData.iconUrl} alt="" width="170px" />
+                  <WeatherIcon code={props.data.icon} />
                 </h4>
               </div>
               <div className="col-5">
@@ -220,6 +223,7 @@ export default function Header(props) {
               </div>
             </div>
           </div>
+          <Forecast city={weatherData.city} />
         </div>
       );
     }
