@@ -88,7 +88,7 @@ export default function Header(props) {
                   <li></li>
                 </ul>
                 <h4>
-                  <WeatherIcon code={props.data.icon} />
+                  <WeatherIcon code={weatherData.icon} />
                 </h4>
               </div>
               <div className="col-5">
@@ -127,13 +127,13 @@ export default function Header(props) {
               </div>
             </div>
           </div>
+          <Forecast city={weatherData.city} />
         </div>
       );
     } else {
       function fahrenheit() {
         return Math.round((weatherData.temperature * 9) / 5 + 32);
       }
-
       return (
         <div className="container">
           <div className="weather-app">
