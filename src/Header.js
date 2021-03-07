@@ -4,12 +4,10 @@ import FormattedDate from "./FormattedDate";
 import WeatherTemperature from "./WeatherTemperature";
 import Forecast from "./Forecast";
 import WeatherIcon from "./WeatherIcon";
-
 export default function Header(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
   const [city, setCity] = useState(props.defaultCity);
   const [unit, setUnit] = useState("celsius");
-
   function handleResponse(response) {
     setWeatherData({
       ready: true,
@@ -18,11 +16,10 @@ export default function Header(props) {
       date: new Date(response.data.dt * 1000),
       description: response.data.weather[0].description,
       icon: response.data.weather[0].icon,
-      wind: response.data.wind.speed,
+      wind: Math.round(response.data.wind.speed),
       city: response.data.name,
     });
   }
-
   function search() {
     const apiKey = "f7a9e1edb73d350092c9960e10136d73";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
@@ -35,7 +32,6 @@ export default function Header(props) {
   function handleCityChange(event) {
     setCity(event.target.value);
   }
-
   if (weatherData.ready) {
     if (unit === "celsius") {
       return (
@@ -126,8 +122,8 @@ export default function Header(props) {
                 </div>
               </div>
             </div>
+            <Forecast city={weatherData.city} />
           </div>
-          <Forecast city={weatherData.city} />
         </div>
       );
     } else {
@@ -184,7 +180,7 @@ export default function Header(props) {
                   <li></li>
                 </ul>
                 <h4>
-                  <img src={weatherData.iconUrl} alt="" width="170px" />
+                  <WeatherIcon code={weatherData.icon} />
                 </h4>
               </div>
               <div className="col-5">
@@ -222,8 +218,8 @@ export default function Header(props) {
                 </div>
               </div>
             </div>
+            <Forecast city={weatherData.city} />
           </div>
-          <Forecast city={weatherData.city} />
         </div>
       );
     }
